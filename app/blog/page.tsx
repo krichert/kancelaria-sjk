@@ -1,33 +1,5 @@
 import Link from 'next/link'
-
-interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  date: string
-  author: string
-  slug: string
-}
-
-// To będzie zastąpione danymi z API/bazy danych
-const mockPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: 'Pierwszy wpis na blogu',
-    excerpt: 'To jest przykładowy wpis na blogu, który pokazuje jak będzie wyglądać lista postów...',
-    date: '2024-01-15',
-    author: 'Admin',
-    slug: 'pierwszy-wpis'
-  },
-  {
-    id: '2',
-    title: 'Drugi wpis na blogu',
-    excerpt: 'Kolejny przykładowy wpis, który można będzie edytować w panelu admin...',
-    date: '2024-01-20',
-    author: 'Admin',
-    slug: 'drugi-wpis'
-  },
-]
+import { mockPosts } from '@/lib/mockPosts'
 
 export default async function BlogPage() {
   // W przyszłości: const posts = await fetchPosts()

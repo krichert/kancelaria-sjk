@@ -1,27 +1,5 @@
 import Link from 'next/link'
-
-interface BlogPost {
-  id: string
-  title: string
-  date: string
-  slug: string
-}
-
-// To będzie zastąpione danymi z API
-const mockPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: 'Pierwszy wpis na blogu',
-    date: '2024-01-15',
-    slug: 'pierwszy-wpis'
-  },
-  {
-    id: '2',
-    title: 'Drugi wpis na blogu',
-    date: '2024-01-20',
-    slug: 'drugi-wpis'
-  },
-]
+import { mockPosts } from '@/lib/mockPosts'
 
 export default function AdminPanel() {
   // W przyszłości: const posts = await fetchPosts()

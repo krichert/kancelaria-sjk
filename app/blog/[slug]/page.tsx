@@ -1,30 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-
-interface BlogPost {
-  id: string
-  title: string
-  content: string
-  date: string
-  author: string
-  slug: string
-}
-
-// To będzie zastąpione danymi z API/bazy danych
-const mockPost: BlogPost = {
-  id: '1',
-  title: 'Pierwszy wpis na blogu',
-  content: `
-    <p>To jest przykładowy wpis na blogu. W przyszłości treść będzie przechowywana w bazie danych 
-    i możliwa do edycji w panelu admin.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt 
-    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-    laboris nisi ut aliquip ex ea commodo consequat.</p>
-  `,
-  date: '2024-01-15',
-  author: 'Admin',
-  slug: 'pierwszy-wpis'
-}
+import { blogPostSlugs, findPostBySlug } from '@/lib/mockPosts'
 
 interface PageProps {
   params: {
@@ -32,9 +8,15 @@ interface PageProps {
   }
 }
 
+export const dynamicParams = false
+
+export function generateStaticParams() {
+  return blogPostSlugs.map((slug) => ({ slug }))
+}
+
 export default async function BlogPostPage({ params }: PageProps) {
   // W przyszłości: const post = await fetchPostBySlug(params.slug)
-  const post = mockPost.slug === params.slug ? mockPost : null
+  const post = findPostBySlug(params.slug) ?? null
 
   if (!post) {
     notFound()
