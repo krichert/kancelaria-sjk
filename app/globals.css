@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Cocomat Pro';
+    src: url('/fonts/cocomat-pro-regular.eot');
+    src: url('/fonts/cocomat-pro-regular.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/cocomat-pro-regular.woff2') format('woff2'),
+         url('/fonts/cocomat-pro-regular.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cocomat Pro';
+    src: url('/fonts/cocomat-pro-regular.eot');
+    src: url('/fonts/cocomat-pro-regular.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/cocomat-pro-regular.woff2') format('woff2'),
+         url('/fonts/cocomat-pro-regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cocomat Pro';
+    src: url('/fonts/cocomat-pro-regular.eot');
+    src: url('/fonts/cocomat-pro-regular.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/cocomat-pro-regular.woff2') format('woff2'),
+         url('/fonts/cocomat-pro-regular.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --color-black: #171717;
+    --color-white: #EDEDED;
+    --color-gray: #444444;
+    --color-accent: #715A5A;
+    --font-cocomat: 'Cocomat Pro', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: var(--color-white);
+    background: var(--color-black);
+    font-family: var(--font-cocomat);
+    font-weight: 300;
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
