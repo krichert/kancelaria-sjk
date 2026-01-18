@@ -1,49 +1,75 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import logo from '@/assets/logo.png'
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { label: 'Specjalizacje', href: '#specjalizacje' },
-  { label: 'Opinie', href: '#opinie' },
-  { label: 'O Kancelarii', href: '#o-kancelarii' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Polityka prywatności', href: '/polityka-prywatnosci' },
-  { label: 'Kontakt', href: '#kontakt' },
-]
+  { label: "Specjalizacje", href: "#specjalizacje" },
+  { label: "Opinie", href: "#opinie" },
+  { label: "O kancelarii", href: "#o-kancelarii" },
+  { label: "Blog", href: "/blog" },
+  { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
+  { label: "Kontakt", href: "#kontakt" },
+];
 
 export default function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
-      e.preventDefault()
-      const element = document.querySelector(href)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        setIsMenuOpen(false)
+  useEffect(() => {
+    // Jeśli jest hash w URL i jesteśmy na stronie głównej, zrób scroll
+    if (pathname === "/" && window.location.hash) {
+      const hash = window.location.hash;
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [pathname]);
+
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      setIsMenuOpen(false);
+
+      // Jeśli jesteśmy na stronie głównej, zrób scroll
+      if (pathname === "/") {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        // Jeśli jesteśmy na innej stronie, przenieś na główną z hashem
+        router.push(`/${href}`);
       }
     } else {
-      setIsMenuOpen(false)
+      setIsMenuOpen(false);
     }
-  }
+  };
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev)
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   const renderLink = (item: (typeof navLinks)[number]) => {
-    if (item.href.startsWith('#')) {
+    if (item.href.startsWith("#")) {
       return (
         <a
           key={item.href}
-          href={item.href}
+          href={`/${item.href}`}
           onClick={(e) => handleSmoothScroll(e, item.href)}
           className="hover:text-[var(--color-accent)] transition-colors"
         >
           {item.label}
         </a>
-      )
+      );
     }
 
     return (
@@ -55,20 +81,26 @@ export default function Navigation() {
       >
         {item.label}
       </Link>
-    )
-  }
+    );
+  };
 
   return (
     <header className="border-b border-[var(--color-black)]">
       <div className="bg-[#d9d9d9] text-[var(--color-black)] shadow-[0_18px_32px_rgba(120,120,120,0.35)] relative z-20">
-        <div className="container mx-auto flex items-center justify-between px-4 py-2 text-sm font-light uppercase tracking-[0.08em]">
-          <span className="text-xs sm:text-sm">zadzwoń i napisz</span>
+        <div className="container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 px-4 py-2 text-sm font-light uppercase tracking-[0.08em]">
+          <span className="text-xs sm:text-sm">zadzwoń lub napisz</span>
           <div className="flex items-center gap-4 text-[var(--color-black)]">
-            <a href="tel:517192750" className="hover:text-[var(--color-accent)] transition-colors">
+            <a
+              href="tel:517192750"
+              className="hover:text-[var(--color-accent)] transition-colors"
+            >
               517 192 750
             </a>
             <span className="hidden sm:inline-block">|</span>
-            <a href="mailto:j.szypniewska@sjkancelaria.pl" className="hover:text-[var(--color-accent)] transition-colors lowercase">
+            <a
+              href="mailto:j.szypniewska@sjkancelaria.pl"
+              className="hover:text-[var(--color-accent)] transition-colors lowercase"
+            >
               j.szypniewska@sjkancelaria.pl
             </a>
           </div>
@@ -78,7 +110,12 @@ export default function Navigation() {
       <nav className="bg-[var(--color-black)] text-[var(--color-white)]">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="flex items-center" aria-label="Strona główna" onClick={() => setIsMenuOpen(false)}>
+            <Link
+              href="/"
+              className="flex items-center"
+              aria-label="Strona główna"
+              onClick={() => setIsMenuOpen(false)}
+            >
               <Image
                 src={logo}
                 alt="Logo Kancelarii SJK"
@@ -96,13 +133,19 @@ export default function Navigation() {
             >
               <span className="sr-only">Menu</span>
               <span
-                className={`block h-px w-6 bg-[var(--color-white)] transition-all ${isMenuOpen ? 'translate-y-1.5 rotate-45' : ''}`}
+                className={`block h-px w-6 bg-[var(--color-white)] transition-all ${
+                  isMenuOpen ? "translate-y-1.5 rotate-45" : ""
+                }`}
               />
               <span
-                className={`block h-px w-6 bg-[var(--color-white)] transition-all my-1 ${isMenuOpen ? 'opacity-0' : ''}`}
+                className={`block h-px w-6 bg-[var(--color-white)] transition-all my-1 ${
+                  isMenuOpen ? "opacity-0" : ""
+                }`}
               />
               <span
-                className={`block h-px w-6 bg-[var(--color-white)] transition-all ${isMenuOpen ? '-translate-y-1.5 -rotate-45' : ''}`}
+                className={`block h-px w-6 bg-[var(--color-white)] transition-all ${
+                  isMenuOpen ? "-translate-y-1.5 -rotate-45" : ""
+                }`}
               />
             </button>
 
@@ -112,7 +155,9 @@ export default function Navigation() {
           </div>
 
           <div
-            className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${isMenuOpen ? 'max-h-96 mt-4' : 'max-h-0'}`}
+            className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${
+              isMenuOpen ? "max-h-96 mt-4" : "max-h-0"
+            }`}
           >
             <div className="flex flex-col gap-4 text-xs font-light uppercase tracking-[0.2em]">
               {navLinks.map(renderLink)}
@@ -121,6 +166,5 @@ export default function Navigation() {
         </div>
       </nav>
     </header>
-  )
+  );
 }
-

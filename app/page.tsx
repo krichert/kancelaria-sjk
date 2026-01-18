@@ -1,13 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import foto1 from "@/assets/foto1.jpg";
-import foto2 from "@/assets/foto2.jpg";
+import person from "@/assets/person.png";
 import foto3 from "@/assets/foto3.jpg";
 
 export default function Home() {
   const [currentOpinion, setCurrentOpinion] = useState(0);
+
+  useEffect(() => {
+    // Obsługa scrollowania do sekcji po załadowaniu strony z hashem
+    if (window.location.hash) {
+      const hash = window.location.hash;
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 300);
+    }
+  }, []);
 
   const opinions = [
     {
@@ -37,41 +50,51 @@ export default function Home() {
 
   return (
     <div className="bg-[var(--color-black)] text-[var(--color-white)] min-h-screen">
-      {/* Hero Section - Main content area */}
-      <section className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid md:grid-cols-2 gap-6 items-center">
-          {/* Left side - Firm description with background photo */}
-          <div
-            className="relative min-h-[320px] flex items-center p-6 bg-cover bg-center shadow-[0_0_22px_rgba(237,237,237,0.18)]"
-            style={{
-              backgroundImage: `url(${foto1.src})`,
-              backgroundPosition: "center top",
-            }}
-          >
-            <div className="absolute inset-0 bg-[var(--color-black)] opacity-70 z-0"></div>
-            <div className="relative z-10 text-[var(--color-white)]">
-              <p className="text-base leading-relaxed font-light">
-                opis głównych założeń kancelarii
+      {/* Hero Section - Main content area with large background photo */}
+      <section
+        className="relative hero-height flex items-center justify-center bg-cover bg-center w-full"
+        style={{
+          backgroundImage: `url(${foto1.src})`,
+          backgroundPosition: "center center",
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-[var(--color-black)] opacity-70 z-0"
+          style={{
+            maskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+          }}
+        ></div>
+        <div className="container mx-auto px-4 py-12 relative z-10">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Left side - Text content */}
+            <div className="text-[var(--color-white)]">
+              <p className="text-lg md:text-xl leading-relaxed font-light">
+                Kancelaria stworzona z myślą o przedsiębiorcach <br />
+                <br />
+                Doradzamy bez nadmiernego komplikowania i rozwlekłych opinii.
+                Wierzymy, że prawo może wspierać biznes zamiast go blokować.
+                Stawiamy na praktyczne rozwiązania i skuteczny rozwój.
               </p>
             </div>
-          </div>
 
-          {/* Right side - Personal photo */}
-          <div className="flex justify-center items-center">
-            <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(237,237,237,0.2)]">
-              <Image
-                src={foto2}
-                alt="Portret przedstawiciela kancelarii"
-                fill
-                sizes="(min-width: 768px) 16rem, 12rem"
-                className="object-cover blur-sm scale-110"
-                priority
-              />
-              <div className="absolute inset-0 bg-[var(--color-black)] opacity-20"></div>
-              <div className="relative z-10 text-center">
-                <p className="text-sm text-[var(--color-white)] font-light">
-                  moja fota
-                </p>
+            {/* Right side - Personal photo */}
+            <div className="flex justify-center items-center">
+              <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(237,237,237,0.3)]">
+                <Image
+                  src={person}
+                  alt="Portret przedstawiciela kancelarii"
+                  fill
+                  sizes="(min-width: 768px) 16rem, 12rem"
+                  className="object-cover scale-110"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -79,7 +102,10 @@ export default function Home() {
       </section>
 
       {/* Specializations Section - visible without scrolling */}
-      <section id="specjalizacje" className="container mx-auto px-4 py-12 md:py-16 mb-16 md:mb-24">
+      <section
+        id="specjalizacje"
+        className="container mx-auto px-4 py-12 md:py-16 mb-16 md:mb-24"
+      >
         <h2 className="text-2xl font-light text-center mb-8 text-[var(--color-white)]">
           Specjalizacje
         </h2>
@@ -91,10 +117,11 @@ export default function Home() {
               </h3>
               <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
                 <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
-                  Kompleksowa obsługa prawna w zakresie przygotowywania,
-                  negocjacji i weryfikacji umów handlowych, kontraktów B2B, umów
-                  o współpracę oraz innych dokumentów prawnych niezbędnych w
-                  prowadzeniu działalności gospodarczej.
+                  Tworzę, weryfikuję i negocjuję umowy gospodarcze. Dzięki
+                  doświadczeniu wiem, gdzie kryją się ryzyka i jak je skutecznie
+                  zabezpieczyć. Nie poprawiam przecinków, skupiam się na
+                  praktycznych zagadnieniach i rzeczywistych zagrożeniach,
+                  rozumiejąc kontekst biznesowy.
                 </p>
               </div>
             </div>
@@ -107,10 +134,12 @@ export default function Home() {
               </h3>
               <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
                 <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
-                  Stała opieka prawna dla jednoosobowych działalności
-                  gospodarczych oraz spółek. Wsparcie w codziennych kwestiach
-                  prawnych, reprezentacja przed organami administracji,
-                  doradztwo w zakresie zgodności z przepisami prawa.
+                  Wspieram biznes na co dzień, zarówno JDG, jak i spółki.
+                  Przygotowuję i negocjuję umowy gospodarcze a następnie pomagam
+                  egzekwować ich wykonywanie. Reaguję na sytuacje kryzysowe,
+                  wykraczające poza zwykłe ryzyko biznesowe. Wspieram również
+                  wewnętrzne relacje korporacyjne odpowiednimi uchwałami organów
+                  i umowami wspólników.
                 </p>
               </div>
             </div>
@@ -123,10 +152,12 @@ export default function Home() {
               </h3>
               <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
                 <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
-                  Ochrona praw autorskich, znaków towarowych, patentów oraz
-                  know-how. Doradztwo w zakresie licencji, umów IT, ochrony
-                  danych osobowych (RODO) oraz regulacji dotyczących nowych
-                  technologii i cyfryzacji.
+                  Dbam o ochronę praw własności intelektualnej oraz pozostałego
+                  know-how. Rozumiem wagę tych aktywów i kompleksowo działam w
+                  celu ich zabezpieczenia. Wspieram zarówno w relacjach z
+                  konkretnymi kontrahentami, wykorzystując sprawdzone zapisy
+                  umowne, jak w relacji z całym rynkiem, pomagając w rejestracji
+                  i ochronie znaku towarowego.
                 </p>
               </div>
             </div>
@@ -139,10 +170,10 @@ export default function Home() {
               </h3>
               <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
                 <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
-                  Kompleksowe wsparcie prawne dla start-upów od fazy pomysłu do
-                  skalowania biznesu. Pomoc w wyborze formy prawnej,
-                  pozyskiwaniu finansowania, negocjacjach z inwestorami oraz
-                  budowaniu struktury korporacyjnej.
+                  Wspieram start-upy na każdym etapie rozwoju, od wyboru formy
+                  prawnej po współpracę z inwestorem. Mam doświadczenie w
+                  umowach inwestycyjnych, wiem jak chronić założycieli i ich
+                  know-how.
                 </p>
               </div>
             </div>
@@ -156,11 +187,12 @@ export default function Home() {
               </h3>
               <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
                 <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
-                  Profesjonalna obsługa procesów przekształceń prawnych
-                  przedsiębiorstw, transformacji jednoosobowej działalności w
-                  spółkę, fuzji i przejęć. Due diligence, negocjacje,
-                  przygotowanie dokumentacji oraz reprezentacja przed organami
-                  rejestrowymi.
+                  Prowadzę procesy reorganizacyjne i transakcyjne, w tym
+                  przekształcenia JDG w spółki kapitałowe, przekształcenia
+                  spółek, połączenia i podziały spółek oraz sprzedaże udziałów i
+                  akcji. Wiem, gdzie mogą pojawić się ryzyka i jak je
+                  zaadresować, by zapewnić klientowi spokój i bezpieczeństwo w
+                  toku całego procesu.
                 </p>
               </div>
             </div>
@@ -181,6 +213,55 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <div className="group bg-[var(--color-black)] shadow-[0_0_18px_rgba(237,237,237,0.12)] overflow-hidden transition-all duration-300 ease-in-out cursor-pointer">
+            <div className="p-4">
+              <h3 className="text-base font-light mb-0 text-[var(--color-white)] transition-all duration-300 group-hover:text-[var(--color-accent)]">
+                Prawo korporacyjne i spółek handlowych
+              </h3>
+              <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
+                <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
+                  Doradzam w zakresie zakładania spółek, rejestracji w KRS,
+                  treści umów spółek i statutów. Pomagam w uregulowaniu relacji
+                  między wspólnikami, struktury organów oraz organizacji
+                  zgromadzeń wspólników i walnych zgromadzeń akcjonariuszy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="group bg-[var(--color-black)] shadow-[0_0_18px_rgba(237,237,237,0.12)] overflow-hidden transition-all duration-300 ease-in-out cursor-pointer">
+            <div className="p-4">
+              <h3 className="text-base font-light mb-0 text-[var(--color-white)] transition-all duration-300 group-hover:text-[var(--color-accent)]">
+                Spory gospodarcze / konflikty biznesowe
+              </h3>
+              <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
+                <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
+                  Pomagam przedsiębiorcom w sporach gospodarczych z
+                  kontrahentami i wspieram w korporacyjnych konfliktach
+                  wspólników (np. wyłączenie wspólnika/uchylenie uchwały).
+                  Prowadzę negocjacje na etapie przedsądowym i reprezentuję na
+                  etapie sądowym.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="group bg-[var(--color-black)] shadow-[0_0_18px_rgba(237,237,237,0.12)] overflow-hidden transition-all duration-300 ease-in-out cursor-pointer">
+            <div className="p-4">
+              <h3 className="text-base font-light mb-0 text-[var(--color-white)] transition-all duration-300 group-hover:text-[var(--color-accent)]">
+                Prawo podatkowe (doradztwo podatkowe)
+              </h3>
+              <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-96 group-hover:mt-4">
+                <p className="text-sm text-[var(--color-white)] font-light leading-relaxed">
+                  Pomagam przedsiębiorcom wybrać właściwą formę opodatkowania i
+                  zrozumieć skutki podatkowe decyzji biznesowych. Współpracuję z
+                  doradcami podatkowymi przy optymalizacji obciążeń zgodnie z
+                  obowiązującymi przepisami.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -188,9 +269,23 @@ export default function Home() {
       <section
         id="opinie"
         className="relative py-12 min-h-[420px] flex items-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${foto3.src})` }}
+        style={{
+          backgroundImage: `url(${foto3.src})`,
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+        }}
       >
-        <div className="absolute inset-0 bg-[var(--color-black)] opacity-80 z-0"></div>
+        <div
+          className="absolute inset-0 bg-[var(--color-black)] opacity-80 z-0"
+          style={{
+            maskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.95) 70%, rgba(0,0,0,0.3) 90%, rgba(0,0,0,0) 100%)",
+          }}
+        ></div>
         <div className="container mx-auto px-4 relative z-10">
           <h2 className="text-2xl font-light text-center mb-6 text-[var(--color-white)]">
             Opinie
@@ -238,20 +333,6 @@ export default function Home() {
               &gt;&gt;
             </button>
           </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="o-kancelarii" className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-light text-center mb-12 text-[var(--color-white)]">
-          O Kancelarii
-        </h2>
-        <div className="max-w-4xl mx-auto">
-          <p className="text-lg leading-relaxed text-[var(--color-white)] font-light text-center">
-            Tutaj znajdzie się szczegółowy opis kancelarii, jej historii,
-            wartości i podejścia do klienta. Informacje o doświadczeniu,
-            osiągnięciach i filozofii pracy.
-          </p>
         </div>
       </section>
 
