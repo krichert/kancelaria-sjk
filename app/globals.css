@@ -26,13 +26,25 @@ body {
         text-wrap: balance;
     }
 
+    .contact-row {
+        flex-direction: column;
+    }
+
+    @media (min-width: 370px) {
+        .contact-row {
+            flex-direction: row;
+        }
+    }
+
     .hero-height {
-        height: calc(100vh - 140px);
+        height: calc(100vh - 100px);
+        min-height: 500px;
     }
 
     @media (min-width: 400px) {
         .hero-height {
-            height: calc(60vh - 140px);
+            height: calc(70vh - 100px);
+            min-height: 600px;
         }
     }
 }

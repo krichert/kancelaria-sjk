@@ -9,7 +9,7 @@ import logo from "@/assets/logo.png";
 const navLinks = [
   { label: "Specjalizacje", href: "#specjalizacje" },
   { label: "Opinie", href: "#opinie" },
-  { label: "O kancelarii", href: "#o-kancelarii" },
+  { label: "Prawnicy", href: "#prawnicy" },
   { label: "Blog", href: "/blog" },
   { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
   { label: "Kontakt", href: "#kontakt" },
@@ -87,16 +87,16 @@ export default function Navigation() {
   return (
     <header className="border-b border-[var(--color-black)]">
       <div className="bg-[#d9d9d9] text-[var(--color-black)] shadow-[0_18px_32px_rgba(120,120,120,0.35)] relative z-20">
-        <div className="container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 px-4 py-2 text-sm font-light uppercase tracking-[0.08em]">
-          <span className="text-xs sm:text-sm">zadzwoń lub napisz</span>
-          <div className="flex items-center gap-4 text-[var(--color-black)]">
+        <div className="container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-2 text-sm font-light uppercase tracking-[0.08em]">
+          <span className="text-xs sm:text-sm text-left mb-4 sm:mb-0">zadzwoń lub napisz</span>
+          <div className="flex contact-row items-start sm:items-center gap-4 text-[var(--color-black)] text-left sm:text-right">
             <a
               href="tel:517192750"
               className="hover:text-[var(--color-accent)] transition-colors"
             >
               517 192 750
             </a>
-            <span className="hidden sm:inline-block">|</span>
+            <span className="hidden min-[370px]:inline-block">|</span>
             <a
               href="mailto:j.szypniewska@sjkancelaria.pl"
               className="hover:text-[var(--color-accent)] transition-colors lowercase"
