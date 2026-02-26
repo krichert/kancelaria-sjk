@@ -12,6 +12,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Exclude API routes from static export
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   ...(normalizedBasePath
     ? {
         basePath: normalizedBasePath,

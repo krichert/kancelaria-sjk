@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { deletePost, getPostById, updatePost } from "@/lib/postsStore";
 
+export async function generateStaticParams() {
+    return [{ id: "1" }];
+}
+
 interface RouteParams {
     params: {
         id: string;
