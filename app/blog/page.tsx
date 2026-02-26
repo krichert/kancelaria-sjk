@@ -1,36 +1,43 @@
 import Link from 'next/link'
-import { mockPosts } from '@/lib/mockPosts'
+import { mockPosts, type BlogPost } from '@/lib/mockPosts'
+import { getPosts } from '@/lib/postsStore'
 
 export default async function BlogPage() {
-  // W przyszłości: const posts = await fetchPosts()
-  const posts = mockPosts
+  // Pobierz posty z obu źródeł
+  const mockPostsList = mockPosts
+  const apiPosts = getPosts()
+  
+  // Połącz oba źródła (oba używają już typu BlogPost)
+  const posts: BlogPost[] = [...mockPostsList, ...apiPosts]
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+    <div className="container mx-auto px-4 py-12 text-[var(--color-white)]">
+      <h1 className="text-4xl font-light mb-8">Blog</h1>
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => (
           <article
             key={post.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+            className="bg-[var(--color-black)] rounded-lg shadow-[0_0_18px_rgba(237,237,237,0.12)] overflow-hidden transition-transform duration-200 hover:-translate-y-1 h-full"
           >
-            <div className="p-6">
-              <div className="text-sm text-gray-500 mb-2">
+            <div className="p-6 flex flex-col h-full">
+              <div className="text-xs text-[var(--color-white)]/60 mb-2">
                 {new Date(post.date).toLocaleDateString('pl-PL')} • {post.author}
               </div>
-              <h2 className="text-2xl font-semibold mb-3">
+              <h2 className="text-2xl font-light mb-3">
                 <Link 
                   href={`/blog/${post.slug}`}
-                  className="hover:text-blue-600 transition"
+                  className="hover:text-[var(--color-accent)] transition-colors"
                 >
                   {post.title}
                 </Link>
               </h2>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <p className="text-sm text-[var(--color-white)]/80 mb-4">
+                {post.excerpt}
+              </p>
               <Link
                 href={`/blog/${post.slug}`}
-                className="text-blue-600 hover:text-blue-700 font-semibold"
+                className="mt-auto text-sm text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors"
               >
                 Czytaj więcej →
               </Link>
@@ -41,7 +48,9 @@ export default async function BlogPage() {
 
       {posts.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-600 text-lg">Brak postów na blogu. Sprawdź później!</p>
+          <p className="text-[var(--color-white)]/70 text-lg">
+            Brak postów na blogu. Sprawdź później!
+          </p>
         </div>
       )}
     </div>
