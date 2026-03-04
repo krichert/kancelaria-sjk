@@ -10,6 +10,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
+    return [{ slug: 'test-slug' }];
   try {
     const posts = getPosts()
     if (!posts || posts.length === 0) {

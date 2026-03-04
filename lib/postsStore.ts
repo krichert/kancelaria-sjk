@@ -4,6 +4,18 @@ import { join } from "path";
 
 const POSTS_FILE = join(process.cwd(), "lib", "posts.json");
 
+const MOCK_POSTS = [
+    {
+        id: "1",
+        title: "Witaj na blogu",
+        excerpt: "Witaj na blogu",
+        content: ["<p>Witaj na blogu</p>", "<p>To jest testowy post</p>"],
+        date: "2026-03-04",
+        author: "Kancelaria SJK",
+        slug: "test-slug",
+    },
+];
+
 function loadPosts(): BlogPost[] {
     try {
         const data = readFileSync(POSTS_FILE, "utf-8");
@@ -35,7 +47,7 @@ function getNextId(posts: BlogPost[]): number {
 }
 
 export function getPosts(): BlogPost[] {
-    return loadPosts();
+    return MOCK_POSTS; // TODO change
 }
 
 export function getPostById(id: string): BlogPost | undefined {

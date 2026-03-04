@@ -1,24 +1,25 @@
 const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH?.trim() ?? ''
 const normalizedBasePath = repoBasePath
-  ? `/${repoBasePath.replace(/^\/+|\/+$/g, '')}`
-  : ''
+    ? `/${repoBasePath.replace(/^\/+|\/+$/g, '')}`
+    : ''
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  trailingSlash: true,
-  images: {
-    unoptimized: true,
-  },
-  // Exclude API routes from static export
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  ...(normalizedBasePath
-    ? {
-        basePath: normalizedBasePath,
-        assetPrefix: normalizedBasePath,
-      }
-    : {}),
+    output: 'export', // TODO remove
+    reactStrictMode: true,
+    swcMinify: true,
+    trailingSlash: true,
+    images: {
+        unoptimized: true,
+    },
+    // Exclude API routes from static export
+    pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+    ...(normalizedBasePath
+        ? {
+            basePath: normalizedBasePath,
+            assetPrefix: normalizedBasePath,
+        }
+        : {}),
 }
 
 module.exports = nextConfig

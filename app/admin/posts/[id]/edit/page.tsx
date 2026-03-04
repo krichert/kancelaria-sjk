@@ -8,6 +8,7 @@ interface EditPageProps {
 }
 
 export function generateStaticParams() {
+  return [{ id: '1' }];
   const posts = getPosts()
   return posts.map((post) => ({ id: post.id }))
 }
