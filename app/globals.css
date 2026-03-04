@@ -48,3 +48,25 @@ body {
         }
     }
 }
+
+/* Style dla cytatów */
+blockquote {
+    font-style: italic;
+    border-left: 4px solid var(--color-accent);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--color-white);
+    opacity: 0.8;
+}
+
+q {
+    font-style: italic;
+}
+
+q::before {
+    content: '\201C'; /* Lewy cudzysłów */
+}
+
+q::after {
+    content: '\201D'; /* Prawy cudzysłów */
+}

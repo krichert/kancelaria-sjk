@@ -8,6 +8,7 @@ export default function NewPostPage() {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [excerpt, setExcerpt] = useState('')
+  const [slug, setSlug] = useState('')
   const [paragraphs, setParagraphs] = useState<string[]>([''])
   const [footer, setFooter] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,7 +36,6 @@ export default function NewPostPage() {
     setError(null)
 
     try {
-      // Konwertuj akapity na HTML content
       const trimmedParagraphs = paragraphs
         .map((p) => p.trim())
         .filter((p) => p.length > 0)
@@ -44,10 +44,14 @@ export default function NewPostPage() {
         throw new Error('Co najmniej jeden akapit musi zawierać treść.')
       }
 
-      const content = trimmedParagraphs
-        .map((p) => `<p>${p}</p>`)
-        .join('') + 
-        (footer ? `<p style="text-align:right;font-style:italic;margin-top:2rem;">${footer}</p>` : '')
+      // Każdy akapit jako osobny element z <p>
+      const content = trimmedParagraphs.map((p) => `<p>${p}</p>`)
+
+      if (footer.trim()) {
+        content.push(
+          `<p style="text-align:right;font-style:italic;margin-top:2rem;">${footer.trim()}</p>`
+        )
+      }
 
       const response = await fetch('/api/posts', {
         method: 'POST',
@@ -57,6 +61,7 @@ export default function NewPostPage() {
         body: JSON.stringify({
           title,
           excerpt,
+          slug: slug.trim() || undefined,
           content,
         }),
       })
@@ -122,6 +127,23 @@ export default function NewPostPage() {
               rows={3}
               className="w-full px-4 py-2 bg-transparent border border-[var(--color-white)]/40 rounded-md text-sm font-light text-[var(--color-white)] placeholder:text-[var(--color-white)]/40 focus:outline-none focus:border-[var(--color-accent)] resize-none"
               placeholder="Krótki opis posta..."
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="slug"
+              className="block text-sm font-light mb-2 text-[var(--color-white)]"
+            >
+              Slug (URL) – opcjonalny
+            </label>
+            <input
+              type="text"
+              id="slug"
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
+              className="w-full px-4 py-2 bg-transparent border border-[var(--color-white)]/40 rounded-md text-sm font-light text-[var(--color-white)] placeholder:text-[var(--color-white)]/40 focus:outline-none focus:border-[var(--color-accent)]"
+              placeholder="np. jak-pracujemy (gdy puste, zostanie wygenerowany z tytułu)"
             />
           </div>
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { deletePost, getPostById, updatePost } from "@/lib/postsStore";
+import { checkAuth } from "@/lib/auth";
 
 export async function generateStaticParams() {
     return [{ id: "1" }];
@@ -23,6 +24,15 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 }
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
+    // Sprawdzenie autentykacji
+    const authCheck = checkAuth(req);
+    if (!authCheck.authenticated) {
+        return NextResponse.json(
+            { error: "Brak autoryzacji. Zaloguj się, aby kontynuować." },
+            { status: 401 }
+        );
+    }
+
     try {
         const id = params.id;
 
@@ -35,12 +45,18 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         }
 
         const body = await req.json();
-        const { title, excerpt, content, slug, author } = body;
+        const { title, excerpt, content, slug, author } = body as {
+            title?: unknown;
+            excerpt?: unknown;
+            content?: unknown;
+            slug?: unknown;
+            author?: unknown;
+        };
 
         const updatedData: {
             title?: string;
             excerpt?: string;
-            content?: string;
+            content?: string[];
             slug?: string;
             author?: string;
         } = {};
@@ -51,8 +67,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         if (typeof excerpt === "string") {
             updatedData.excerpt = excerpt;
         }
-        if (typeof content === "string") {
-            updatedData.content = content;
+        if (Array.isArray(content)) {
+            updatedData.content = content.map((item) => String(item));
         }
         if (typeof slug === "string") {
             updatedData.slug = slug;
@@ -79,7 +95,16 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     }
 }
 
-export async function DELETE(_: NextRequest, { params }: RouteParams) {
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+    // Sprawdzenie autentykacji
+    const authCheck = checkAuth(req);
+    if (!authCheck.authenticated) {
+        return NextResponse.json(
+            { error: "Brak autoryzacji. Zaloguj się, aby kontynuować." },
+            { status: 401 }
+        );
+    }
+
     const id = params.id;
 
     const success = deletePost(id);

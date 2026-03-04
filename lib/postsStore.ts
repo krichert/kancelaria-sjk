@@ -1,18 +1,50 @@
-import type { BlogPost } from './mockPosts'
+import type { BlogPost } from "./types";
+import { readFileSync, writeFileSync } from "fs";
+import { join } from "path";
 
-let posts: BlogPost[] = [];
+const POSTS_FILE = join(process.cwd(), "lib", "posts.json");
 
-let nextId = 1;
+function loadPosts(): BlogPost[] {
+    try {
+        const data = readFileSync(POSTS_FILE, "utf-8");
+        const posts = JSON.parse(data) as BlogPost[];
+        return Array.isArray(posts) ? posts : [];
+    } catch (error) {
+        // Jeśli plik nie istnieje lub jest pusty, zwróć pustą tablicę
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+            return [];
+        }
+        console.error("Błąd podczas wczytywania postów:", error);
+        return [];
+    }
+}
+
+function savePosts(posts: BlogPost[]): void {
+    try {
+        writeFileSync(POSTS_FILE, JSON.stringify(posts, null, 2), "utf-8");
+    } catch (error) {
+        console.error("Błąd podczas zapisywania postów:", error);
+        throw new Error("Nie udało się zapisać postów do pliku");
+    }
+}
+
+function getNextId(posts: BlogPost[]): number {
+    if (posts.length === 0) return 1;
+    const maxId = Math.max(...posts.map((p) => parseInt(p.id, 10) || 0));
+    return maxId + 1;
+}
 
 export function getPosts(): BlogPost[] {
-    return posts;
+    return loadPosts();
 }
 
 export function getPostById(id: string): BlogPost | undefined {
+    const posts = loadPosts();
     return posts.find((p) => p.id === id);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
+    const posts = loadPosts();
     return posts.find((p) => p.slug === slug);
 }
 
@@ -35,7 +67,7 @@ function generateSlug(title: string): string {
         .replace(/^-|-$/g, ""); // Usuń myślniki na początku i końcu
 }
 
-function ensureUniqueSlug(baseSlug: string): string {
+function ensureUniqueSlug(baseSlug: string, posts: BlogPost[]): string {
     let slug = baseSlug;
     let counter = 1;
     while (posts.some((p) => p.slug === slug)) {
@@ -46,11 +78,13 @@ function ensureUniqueSlug(baseSlug: string): string {
 }
 
 export function createPost(data: Omit<BlogPost, "id" | "date" | "slug" | "author"> & { slug?: string; author?: string }): BlogPost {
+    const posts = loadPosts();
     const baseSlug = data.slug || generateSlug(data.title);
-    const uniqueSlug = ensureUniqueSlug(baseSlug);
+    const uniqueSlug = ensureUniqueSlug(baseSlug, posts);
+    const nextId = getNextId(posts);
 
     const newPost: BlogPost = {
-        id: String(nextId++),
+        id: String(nextId),
         title: data.title,
         excerpt: data.excerpt,
         content: data.content,
@@ -59,7 +93,8 @@ export function createPost(data: Omit<BlogPost, "id" | "date" | "slug" | "author
         slug: uniqueSlug,
     };
 
-    posts = [...posts, newPost];
+    const updatedPosts = [...posts, newPost];
+    savePosts(updatedPosts);
     return newPost;
 }
 
@@ -67,7 +102,8 @@ export function updatePost(
     id: string,
     data: Partial<Omit<BlogPost, "id">>
 ): BlogPost | undefined {
-    const existing = getPostById(id);
+    const posts = loadPosts();
+    const existing = posts.find((p) => p.id === id);
     if (!existing) return undefined;
 
     let updatedData = { ...data };
@@ -88,13 +124,19 @@ export function updatePost(
         ...updatedData,
     };
 
-    posts = posts.map((p) => (p.id === id ? updated : p));
+    const updatedPosts = posts.map((p) => (p.id === id ? updated : p));
+    savePosts(updatedPosts);
     return updated;
 }
 
 export function deletePost(id: string): boolean {
+    const posts = loadPosts();
     const beforeLength = posts.length;
-    posts = posts.filter((p) => p.id !== id);
-    return posts.length < beforeLength;
-}
+    const updatedPosts = posts.filter((p) => p.id !== id);
 
+    if (updatedPosts.length < beforeLength) {
+        savePosts(updatedPosts);
+        return true;
+    }
+    return false;
+}

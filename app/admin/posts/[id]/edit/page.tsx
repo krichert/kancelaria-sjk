@@ -1,5 +1,5 @@
 import { EditPostForm } from '@/components/admin/EditPostForm'
-import { blogPostIds, findPostById } from '@/lib/mockPosts'
+import { getPostById, getPosts } from '@/lib/postsStore'
 
 interface EditPageProps {
   params: {
@@ -7,14 +7,13 @@ interface EditPageProps {
   }
 }
 
-export const dynamicParams = false
-
 export function generateStaticParams() {
-  return blogPostIds.map((id) => ({ id }))
+  const posts = getPosts()
+  return posts.map((post) => ({ id: post.id }))
 }
 
 export default function EditPostPage({ params }: EditPageProps) {
-  const post = findPostById(params.id)
+  const post = getPostById(params.id)
 
   return <EditPostForm postId={params.id} initialPost={post} />
 }

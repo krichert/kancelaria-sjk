@@ -174,8 +174,8 @@ export default function Home() {
               "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%)",
           }}
         ></div>
-        <div className="container mx-auto px-4 py-10 md:py-16 relative z-10">
-          <div className="lg:max-w-[75vw] md:max-w-3xl mx-auto md:mx-0 mb-10 md:mb-14">
+        <div className="container mx-auto px-4 py-10 md:py-30 relative z-10">
+          <div className="lg:max-w-[75vw] md:max-w-3xl mx-auto md:mx-0 mb-10 md:mb-20">
             {/* Text content */}
             <div className="text-[var(--color-white)]">
               <p className="text-lg md:text-xl leading-relaxed font-light">
@@ -337,7 +337,7 @@ export default function Home() {
             {/* Lawyers Section */}
             <section
         id="prawnicy"
-        className="relative py-24 md:py-32 mb-8 md:mb-16 flex items-center bg-cover bg-center"
+        className="relative mb-4 md:mb-8 flex items-center bg-cover bg-center"
         style={{
           backgroundImage: `url(${foto4.src})`,
           maskImage:
@@ -355,7 +355,7 @@ export default function Home() {
               "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%)",
           }}
         ></div>
-        <div className="container mx-auto px-4 relative z-10 py-12 sm:py-20">
+        <div className="container mx-auto px-4 relative z-10 py-16">
           <h2 className="text-2xl font-light text-center mb-16 text-[var(--color-white)]">
             Prawnicy
           </h2>
@@ -533,7 +533,7 @@ export default function Home() {
       {/* Opinions Section - fixed height */}
       <section
         id="opinie"
-        className="relative h-[600px] flex flex-col bg-cover bg-center mb-16 md:mb-24"
+        className="relative h-[600px] flex flex-col bg-cover bg-center mb-8 md:mb-12"
         style={{
           backgroundImage: `url(${foto3.src})`,
           maskImage:
@@ -560,8 +560,8 @@ export default function Home() {
             <div className="grid gap-6 lg:grid-cols-3 w-full">
               {/* Główna opinia – widoczna na wszystkich ekranach */}
               <div className="bg-transparent p-6 text-center">
-                <p className="text-base text-[var(--color-white)] mb-3 font-light">
-                  {opinions[currentOpinion].text}
+                <p className="text-base text-[var(--color-white)] mb-3 font-light italic">
+                  &ldquo;{opinions[currentOpinion].text}&rdquo;
                 </p>
                 <p className="text-sm text-[var(--color-white)] opacity-75 font-light">
                   — {opinions[currentOpinion].author}
@@ -571,8 +571,8 @@ export default function Home() {
               {/* Dwie kolejne opinie – tylko na dużych ekranach, obok siebie */}
               <div className="hidden lg:block">
                 <div className="bg-transparent p-6 text-center">
-                  <p className="text-base text-[var(--color-white)] mb-3 font-light">
-                    {opinions[secondOpinionIndex].text}
+                  <p className="text-base text-[var(--color-white)] mb-3 font-light italic">
+                    &ldquo;{opinions[secondOpinionIndex].text}&rdquo;
                   </p>
                   <p className="text-sm text-[var(--color-white)] opacity-75 font-light">
                     — {opinions[secondOpinionIndex].author}
@@ -582,8 +582,8 @@ export default function Home() {
 
               <div className="hidden lg:block">
                 <div className="bg-transparent p-6 text-center">
-                  <p className="text-base text-[var(--color-white)] mb-3 font-light">
-                    {opinions[thirdOpinionIndex].text}
+                  <p className="text-base text-[var(--color-white)] mb-3 font-light italic">
+                    &ldquo;{opinions[thirdOpinionIndex].text}&rdquo;
                   </p>
                   <p className="text-sm text-[var(--color-white)] opacity-75 font-light">
                     — {opinions[thirdOpinionIndex].author}
@@ -636,7 +636,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="kontakt" className="container mx-auto px-4 py-16">
+      <section id="kontakt" className="container mx-auto px-4 py-8 md:py-12">
         <h2 className="text-3xl font-light text-center mb-12 text-[var(--color-white)]">
           Kontakt
         </h2>

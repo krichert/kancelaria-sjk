@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { blogPostSlugs, findPostBySlug, type BlogPost } from '@/lib/mockPosts'
-import { getPostBySlug } from '@/lib/postsStore'
+import type { BlogPost } from '@/lib/types'
+import { getPostBySlug, getPosts } from '@/lib/postsStore'
 
 interface PageProps {
   params: {
@@ -11,16 +11,12 @@ interface PageProps {
 
 export async function generateStaticParams() {
   try {
-    // Pobierz slugi z mockPosts
-    const mockSlugs = blogPostSlugs.map((slug) => ({ slug: String(slug) }));
-
-    if (!mockSlugs || mockSlugs.length === 0) {
-      return [];
+    const posts = getPosts()
+    if (!posts || posts.length === 0) {
+      return []
     }
 
-    // W trybie statycznego eksportu (output: 'export') API routes nie działają w czasie builda,
-    // więc zwracamy tylko slugi z mockPosts. Posty z API będą dostępne w runtime.
-    return mockSlugs;
+    return posts.map((post) => ({ slug: String(post.slug) }))
   } catch (error) {
     console.error('Błąd w generateStaticParams:', error);
     return [];
@@ -28,13 +24,7 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  // Sprawdź najpierw w mockPosts, potem w postsStore
-  let post: BlogPost | null = findPostBySlug(params.slug) ?? null
-  
-  if (!post) {
-    // Jeśli nie znaleziono w mockPosts, sprawdź w postsStore
-    post = getPostBySlug(params.slug) ?? null
-  }
+  const post: BlogPost | null = getPostBySlug(params.slug) ?? null
 
   if (!post) {
     notFound()
@@ -59,8 +49,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       </header>
       
       <div 
-        className="max-w-none text-[var(--color-white)]/90 font-light leading-relaxed [&_p]:mb-4 [&_a]:text-[var(--color-accent)] [&_a]:underline [&_a:hover]:opacity-90"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        className="max-w-none text-[var(--color-white)]/90 font-light leading-relaxed [&_p]:mb-4 [&_a]:text-[var(--color-accent)] [&_a]:underline [&_a:hover]:opacity-90 [&_blockquote]:italic [&_blockquote]:border-l-4 [&_blockquote]:border-[var(--color-accent)] [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:text-[var(--color-white)]/80 [&_q]:italic [&_q]:before:content-['\201C'] [&_q]:after:content-['\201D']"
+        dangerouslySetInnerHTML={{ __html: post.content.join('') }}
       />
     </article>
   )

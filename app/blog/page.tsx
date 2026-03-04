@@ -1,14 +1,9 @@
 import Link from 'next/link'
-import { mockPosts, type BlogPost } from '@/lib/mockPosts'
+import type { BlogPost } from '@/lib/types'
 import { getPosts } from '@/lib/postsStore'
 
 export default async function BlogPage() {
-  // Pobierz posty z obu źródeł
-  const mockPostsList = mockPosts
-  const apiPosts = getPosts()
-  
-  // Połącz oba źródła (oba używają już typu BlogPost)
-  const posts: BlogPost[] = [...mockPostsList, ...apiPosts]
+  const posts: BlogPost[] = getPosts()
 
   return (
     <div className="container mx-auto px-4 py-12 text-[var(--color-white)]">
